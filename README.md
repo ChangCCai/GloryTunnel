@@ -1,6 +1,6 @@
 Simple REST client for tunneling glory information through to the webhook
 
-## Installing necessary dependencies
+## Install dependencies
 ```bash
 $ npm install
 ```

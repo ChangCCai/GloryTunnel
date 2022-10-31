@@ -3,7 +3,9 @@ Simple REST client for tunneling glory information through to the webhook
 ## Installing necessary dependencies
 ```bash
 $ npm install
+```
 or 
+```bash
 $ yarn install
 ```
 

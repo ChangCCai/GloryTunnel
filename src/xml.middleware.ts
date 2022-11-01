@@ -28,7 +28,7 @@ export class XMLMiddleware implements NestMiddleware {
         next(new HttpException(`${XMLMiddleware.name} error`, HttpStatus.LENGTH_REQUIRED));
       }
 
-      req.body = this.xml2JSON(data);
+      req.body = data;
       next();
     });
   }
@@ -43,23 +43,5 @@ export class XMLMiddleware implements NestMiddleware {
     const contentType = req.headers['content-type'] || '';
     const contentTypesArray = contentType.split(';')[0];
     return this.typeRegEx.test(contentTypesArray);
-  }
-
-  private xml2JSON(xml: string) {
-    let body;
-    const rawXML: string = xml.substring(xml.indexOf('<SOAP-ENV:Body>') + 15, xml.indexOf('</SOAP-ENV:Body>'));
-    const parser = new xml2js.Parser();
-
-    parser.parseString(rawXML, function (err, result) {
-      body = result;
-    });
-
-    const eventType = Object.keys(body['ns2:BbxEventRequest']).filter(key => key.includes('Event') || key.includes('Response'));
-
-    body[eventType[0]] = body['ns2:BbxEventRequest'];
-    delete body['ns2:BbxEventRequest'];
-
-    console.log(`post processed body: ${JSON.stringify(body)}, eventType: ${eventType}`);
-    return { eventType: eventType[0], payload: body };
   }
 }

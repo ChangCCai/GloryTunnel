@@ -17,7 +17,7 @@ export class AppController {
   ) {
     console.log(`post body: ${JSON.stringify(body)}`);
     const { payload, eventType } = body;
-    await this.http.axiosRef.post(process.env.FXG_URL, { eventType, payload, ip: ip.substring(7) })
+    await this.http.axiosRef.post(process.env.FXG_URL, { payload: body, ip: ip.substring(7) })
     return `${JSON.stringify({ tinyCode: "C-C5AC", body: body })}`;
   }
 }

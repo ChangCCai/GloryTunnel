@@ -1,23 +1,21 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AppService } from './app.service';
 import { RealIP } from 'nestjs-real-ip';
 import { HttpService } from '@nestjs/axios';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
     private readonly http: HttpService,
   ) { }
 
   @Post()
-  async getHello(
+  async getBody(
     @Body() body: any,
     @RealIP() ip: string,
   ) {
-    console.log(`post body: ${JSON.stringify(body)}`);
     const { payload, eventType } = body;
     await this.http.axiosRef.post(process.env.FXG_URL, { payload: body, ip: ip.substring(7) })
+    console.log(`post body: ${JSON.stringify(body)}, ip: ${ip}`);
     return `${JSON.stringify({ tinyCode: "C-C5AC", body: body })}`;
   }
 }
